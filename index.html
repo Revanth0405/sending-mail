@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sending Application</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-image: url("https://blog.42mate.com/wp-content/uploads/2018/07/opening-email-ss-1920.jpg");
+    background-color: #f2f2f2;
+}
+
+.container, .instructions {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #888282;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"],
+textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.success-message {
+    color: #7cb78a;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="/main-page-form" method="post">
+            <input type="email" name="mymail" id="mymail" placeholder="Your mail" required>
+            <input type="email" name="yourmail" id="yourmail" placeholder="Recievers mail" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <input type="text" name="message" id="message" placeholder="Message" required>
+            <input type="submit" value="Send Email">
+        </form>
+        <div id="successMessage" class="success-message" style="display: none;">Email sent successfully!</div>
+    </div>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <p>
+            1. Open Manage Your Account in Your Mail<br>
+            2. Now go to Security and on the two step verification<br>
+            3. Now open the app passwords and create any random password<br>
+            4. Use that password to send the mail to your mentioned person.<br>
+            5. Now click on submit and ask your friend to check their inbox<br>
+        </p>
+    </div>
+</body>
+<script>
+    const form = document.querySelector('form')
+
+    form.addEventListener('submit', (evt)=>{
+        evt.preventDefault()
+
+        const fd = new FormData(form)
+        const urlencoded = new URLSearchParams(fd).toString()
+
+        fetch('/main-page-form', {
+            method:'POST',
+            body:urlencoded,
+            headers:{
+                "Content-type":'application/x-www-form-urlencoded'
+            }
+        }).then(response => response.text())
+            .then(message => {
+                alert(message);
+                document.getElementById('successMessage').style.display = 'block';
+            })
+            .catch(error => {
+                alert('Error');
+            });
+        })
+</script>
+</html>
